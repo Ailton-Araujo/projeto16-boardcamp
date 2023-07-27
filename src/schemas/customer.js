@@ -6,12 +6,12 @@ const schemaCustomer = Joi.object({
     .trim()
     .min(10)
     .max(11)
-    .pattern(/^[0-9]/)
+    .pattern(/[^\D]$/)
     .required(),
   cpf: Joi.string()
     .trim()
     .length(11)
-    .pattern(/^[0-9]/)
+    .pattern(/[^\D]$/)
     .required(),
   birthday: Joi.date().required(),
 });
