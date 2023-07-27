@@ -83,7 +83,8 @@ async function endRentals(req, res) {
 
     const delayDays = Math.floor(
       (returnDay - dayjs(rental.rows[0].rentDate).format("x")) /
-        (1000 * 60 * 60 * 24)
+        (1000 * 60 * 60 * 24) -
+        Number(rental.rows[0].daysRented)
     );
 
     await db.query(
@@ -104,8 +105,9 @@ async function deleteRentals(req, res) {
       id,
     ]);
     if (rental.rows.length === 0) return res.sendStatus(404);
-    if (rental.rows[0].returnDate !== null)
-      return res.status(400).send("This rent is already Closed");
+
+    if (rental.rows[0].returnDate === null)
+      return res.status(400).send("This rent is NOT Closed");
 
     await db.query(`DELETE FROM rentals WHERE "id" = $1;`, [id]);
     res.sendStatus(200);
