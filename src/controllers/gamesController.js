@@ -8,34 +8,33 @@ async function getGames(req, res) {
 
   if (name) {
     sqlQueryParams.push(name + "%");
-    sqlQuery += `WHERE LOWER(name) LIKE LOWER($${
-      sqlQueryParams.findIndex((element) => element === name + "%") + 1
-    }) `;
+    sqlQuery += `WHERE LOWER(name) LIKE LOWER($${sqlQueryParams.length}) `;
   }
 
   if (offset) {
     sqlQueryParams.push(offset);
-    sqlQuery += `OFFSET $${
-      sqlQueryParams.findIndex((element) => element === offset) + 1
-    }`;
+    sqlQuery += `OFFSET $${sqlQueryParams.length} `;
   }
 
   if (limit) {
     sqlQueryParams.push(limit);
-    sqlQuery += `LIMIT $${
-      sqlQueryParams.findIndex((element) => element === limit) + 1
-    }`;
+    sqlQuery += `LIMIT $${sqlQueryParams.length} `;
   }
 
-  if (order) {
-    sqlQueryParams.push(order);
-    sqlQuery += `ORDER BY LOWER($${
-      sqlQueryParams.findIndex((element) => element === order) + 1
-    })`;
-    if (desc && desc.toLowerCase() === true) {
-      sqlQuery += `DESC`;
-    }
-  }
+  // if (order) {
+  //   sqlQueryParams.push(`quote_ident ( ${order} )`);
+  //   console.log();
+
+  //   sqlQuery += ` ORDER BY $${
+  //     sqlQueryParams.findIndex(
+  //       (element) => element === `quote_ident ( ${order} )`
+  //     ) + 1
+  //   } `;
+  //   console.log(sqlQuery, sqlQueryParams);
+  //   if (desc && desc.toLowerCase() === "true") {
+  //     sqlQuery += `DESC`;
+  //   }
+  // }
 
   try {
     const games = await db.query(
