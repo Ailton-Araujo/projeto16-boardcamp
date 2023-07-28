@@ -11,6 +11,14 @@ async function getCustomers(req, res) {
     sqlQuery += `WHERE cpf LIKE $${sqlQueryParams.length} `;
   }
 
+  if (order) {
+    sqlQuery += `ORDER BY customers."${order}" `;
+    console.log(sqlQuery);
+    if (desc && desc.toLowerCase() === "true") {
+      sqlQuery += `DESC`;
+    }
+  }
+
   if (offset) {
     sqlQueryParams.push(offset);
     sqlQuery += `OFFSET $${sqlQueryParams.length} `;
@@ -19,13 +27,6 @@ async function getCustomers(req, res) {
   if (limit) {
     sqlQueryParams.push(limit);
     sqlQuery += `LIMIT $${sqlQueryParams.length} `;
-  }
-
-  if (order) {
-    sqlQuery += ` ORDER BY "${order}" `;
-    if (desc && desc.toLowerCase() === "true") {
-      sqlQuery += `DESC`;
-    }
   }
 
   try {

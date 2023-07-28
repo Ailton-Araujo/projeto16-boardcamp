@@ -38,6 +38,13 @@ async function getRentals(req, res) {
     sqlQuery += ` "rentDate" >= $${sqlQueryParams.length}`;
   }
 
+  if (order) {
+    sqlQuery += ` ORDER BY rentals."${order}" `;
+    if (desc && desc.toLowerCase() === "true") {
+      sqlQuery += `DESC`;
+    }
+  }
+
   if (offset) {
     sqlQueryParams.push(offset);
     sqlQuery += `OFFSET $${sqlQueryParams.length} `;
@@ -46,13 +53,6 @@ async function getRentals(req, res) {
   if (limit) {
     sqlQueryParams.push(limit);
     sqlQuery += `LIMIT $${sqlQueryParams.length} `;
-  }
-
-  if (order) {
-    sqlQuery += ` ORDER BY "${order}" `;
-    if (desc && desc.toLowerCase() === "true") {
-      sqlQuery += `DESC`;
-    }
   }
 
   try {

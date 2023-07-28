@@ -11,6 +11,13 @@ async function getGames(req, res) {
     sqlQuery += `WHERE LOWER(name) LIKE LOWER($${sqlQueryParams.length}) `;
   }
 
+  if (order) {
+    sqlQuery += ` ORDER BY "${order}" `;
+    if (desc && desc.toLowerCase() === "true") {
+      sqlQuery += `DESC`;
+    }
+  }
+
   if (offset) {
     sqlQueryParams.push(offset);
     sqlQuery += `OFFSET $${sqlQueryParams.length} `;
@@ -19,13 +26,6 @@ async function getGames(req, res) {
   if (limit) {
     sqlQueryParams.push(limit);
     sqlQuery += `LIMIT $${sqlQueryParams.length} `;
-  }
-
-  if (order) {
-    sqlQuery += ` ORDER BY "${order}" `;
-    if (desc && desc.toLowerCase() === "true") {
-      sqlQuery += `DESC`;
-    }
   }
 
   try {
