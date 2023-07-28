@@ -13,7 +13,6 @@ async function getCustomers(req, res) {
 
   if (order) {
     sqlQuery += `ORDER BY customers."${order}" `;
-    console.log(sqlQuery);
     if (desc && desc.toLowerCase() === "true") {
       sqlQuery += `DESC`;
     }
