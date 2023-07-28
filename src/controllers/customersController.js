@@ -21,6 +21,13 @@ async function getCustomers(req, res) {
     sqlQuery += `LIMIT $${sqlQueryParams.length} `;
   }
 
+  if (order) {
+    sqlQuery += ` ORDER BY "${order}" `;
+    if (desc && desc.toLowerCase() === "true") {
+      sqlQuery += `DESC`;
+    }
+  }
+
   try {
     const customers = await db.query(
       `SELECT *, TO_CHAR(birthday, 'YYYY-MM-DD') AS birthday FROM customers ${sqlQuery};`,

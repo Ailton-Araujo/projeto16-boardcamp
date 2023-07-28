@@ -48,6 +48,13 @@ async function getRentals(req, res) {
     sqlQuery += `LIMIT $${sqlQueryParams.length} `;
   }
 
+  if (order) {
+    sqlQuery += ` ORDER BY "${order}" `;
+    if (desc && desc.toLowerCase() === "true") {
+      sqlQuery += `DESC`;
+    }
+  }
+
   try {
     const rentals = await db.query(
       `

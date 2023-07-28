@@ -21,20 +21,12 @@ async function getGames(req, res) {
     sqlQuery += `LIMIT $${sqlQueryParams.length} `;
   }
 
-  // if (order) {
-  //   sqlQueryParams.push(`quote_ident ( ${order} )`);
-  //   console.log();
-
-  //   sqlQuery += ` ORDER BY $${
-  //     sqlQueryParams.findIndex(
-  //       (element) => element === `quote_ident ( ${order} )`
-  //     ) + 1
-  //   } `;
-  //   console.log(sqlQuery, sqlQueryParams);
-  //   if (desc && desc.toLowerCase() === "true") {
-  //     sqlQuery += `DESC`;
-  //   }
-  // }
+  if (order) {
+    sqlQuery += ` ORDER BY "${order}" `;
+    if (desc && desc.toLowerCase() === "true") {
+      sqlQuery += `DESC`;
+    }
+  }
 
   try {
     const games = await db.query(
